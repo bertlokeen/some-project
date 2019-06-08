@@ -9,7 +9,7 @@ const opts = {
 };
 
 module.exports = passport => {
-  passport.use(
+  passport.use('Login Strategy',
     new JwtStrategy(opts, async (payload, done) => {
       const user = await User.findById(payload.id);
 
@@ -18,4 +18,4 @@ module.exports = passport => {
       return done(null, false);
     })
   );
-};
+}

@@ -9,6 +9,7 @@ const errorHandlers = require('./handlers/errors');
 require('./models/User');
 
 const user = require('./routes/user');
+const auth = require('./routes/auth');
 
 const app = express();
 
@@ -17,13 +18,14 @@ app.use(bodyParser.json());
 
 app.use(expressValidator());
 
-// app.use(passport.initialize());
-// require('./handlers/passport')(passport);
+app.use(passport.initialize());
+require('./handlers/passport')(passport);
 
 // app.use('/', (req, res) => {
 //   res.send('Welcome');
 // });
 
+app.use('/api/auth/', auth);
 app.use('/api/users/', user);
 
 app.use(errorHandlers.notFound);

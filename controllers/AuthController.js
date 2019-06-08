@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const bcrypt = require('bcrypt');
 
-exports.validateLogin = (req, res, next) => {
+exports.validate = (req, res, next) => {
   req.checkBody('email', 'Email is required.').notEmpty();
   req.checkBody('password', 'Password is required.').notEmpty();
 
@@ -18,17 +18,23 @@ exports.validateLogin = (req, res, next) => {
 exports.login = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
-  if (!user) return res.status(404).send('Incorrect email or password');
+  if (!user) return res.status(404).send({
+    message: 'Incorrect email or password'
+  });
 
   const isMatched = await bcrypt.compare(req.body.password, user.password);
 
   if (isMatched) {
     const token = await user.generateToken();
 
-    res.send({
-      token: `Bearer ${token}`
-    });
+    res.append('Token', `Bearer ${token}`);
+
+    user.password = undefined;
+
+    res.send(user);
   } else {
-    return res.status(404).send('Incorrect email or password');
+    return res.status(404).send({
+      message: 'Incorrect email or password'
+    });
   }
 };

@@ -21,7 +21,9 @@ exports.validate = (req, res, next) => {
 exports.create = async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
 
-  if (user) return res.status(400).send('Email has already been taken');
+  if (user) return res.status(400).send({
+    message: 'Email has already been taken'
+  });
 
   user = await new User({
     name: req.body.name,
