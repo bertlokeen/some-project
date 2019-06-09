@@ -27,11 +27,10 @@ exports.login = async (req, res) => {
   if (isMatched) {
     const token = await user.generateToken();
 
-    res.append('Token', `Bearer ${token}`);
-
-    user.password = undefined;
-
-    res.send(user);
+    res.json({
+      success: true,
+      token: `Bearer ${token}`
+    });
   } else {
     return res.status(404).send({
       message: 'Incorrect email or password'

@@ -3,15 +3,20 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const expressValidator = require('express-validator');
+const cors = require('cors');
 
 const errorHandlers = require('./handlers/errors');
 
 require('./models/User');
+require('./models/Post');
 
 const user = require('./routes/user');
 const auth = require('./routes/auth');
+const post = require('./routes/post');
 
 const app = express();
+
+app.use(cors());
 
 require('dotenv').config({ path: 'variables.env' });
 
@@ -29,6 +34,7 @@ require('./handlers/passport')(passport);
 
 app.use('/api/auth/', auth);
 app.use('/api/users/', user);
+app.use('/api/posts/', post);
 
 app.use(errorHandlers.notFound);
 app.use(errorHandlers.handleErrors);

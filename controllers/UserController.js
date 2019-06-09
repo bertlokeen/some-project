@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
 exports.validate = (req, res, next) => {
-  req.checkBody('email').notEmpty();
-  req.checkBody('email', 'Email is must be valid.').isEmail();
-  req.checkBody('password', 'Password is required.').notEmpty();
+  req.checkBody('name', 'Name is required').notEmpty();
+  req.checkBody('email', 'Email must be valid').isEmail();
+  req.checkBody('password', 'Password is required').notEmpty();
   req.checkBody('password_confirm', 'Confirmed Password is required').notEmpty();
-  req.checkBody('password_confirm', 'Passwords do not match.').equals(req.body.password);
+  req.checkBody('password_confirm', 'Passwords do not match').equals(req.body.password);
 
   const errors = req.validationErrors();
 
@@ -35,7 +35,7 @@ exports.create = async (req, res) => {
   res.send(user);
 }
 
-exports.show = async (req, res) => {
+exports.profile = async (req, res) => {
   req.user.password = undefined;
 
   res.send(req.user);

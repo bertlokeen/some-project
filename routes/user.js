@@ -6,8 +6,8 @@ const { catchErrors } = require('../handlers/errors');
 
 const UserController = require('../controllers/UserController');
 
-router.post('/create', UserController.validate, UserController.create);
+router.post('/create', UserController.validate, catchErrors(UserController.create));
 
-router.get('/show', authenticate, catchErrors(UserController.show));
+router.get('/profile', authenticate, catchErrors(UserController.profile));
 
 module.exports = router;
