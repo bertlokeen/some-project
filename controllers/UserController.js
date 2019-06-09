@@ -3,7 +3,6 @@ const User = mongoose.model('User');
 
 exports.validate = (req, res, next) => {
   req.checkBody('email').notEmpty();
-  req.checkBody('email').notEmpty();
   req.checkBody('email', 'Email is must be valid.').isEmail();
   req.checkBody('password', 'Password is required.').notEmpty();
   req.checkBody('password_confirm', 'Confirmed Password is required').notEmpty();
@@ -31,5 +30,13 @@ exports.create = async (req, res) => {
     password: req.body.password
   }).save();
 
+  user.password = undefined;
+
   res.send(user);
+}
+
+exports.show = async (req, res) => {
+  req.user.password = undefined;
+
+  res.send(req.user);
 }

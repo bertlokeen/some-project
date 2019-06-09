@@ -13,6 +13,8 @@ const auth = require('./routes/auth');
 
 const app = express();
 
+require('dotenv').config({ path: 'variables.env' });
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -31,8 +33,7 @@ app.use('/api/users/', user);
 app.use(errorHandlers.notFound);
 app.use(errorHandlers.handleErrors);
 
-require('dotenv').config({ path: 'variables.env' });
-
+mongoose.set('useCreateIndex', true);
 mongoose
   .connect(process.env.DATABASE, { useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
